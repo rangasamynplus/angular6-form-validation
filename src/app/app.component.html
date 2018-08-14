@@ -1,20 +1,98 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<!-- <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+    Welcome to {{ title }}! 
+  </h1>   
+</div> -->
 
+<!-- main app container -->
+<div class="jumbotron">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6 offset-md-3">
+              <h2>Angular 6 Reactive Form Validation</h2>
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback alert alert-danger">
+                          <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                      <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback alert alert-danger">
+                          <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label>Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                      <input type="radio" value="male" formControlName="gender"> Male
+                      <input type="radio" value="female" formControlName="gender"> Female
+                      <div *ngIf="submitted && registerForm.get('gender').invalid" class="alert alert-danger"> 
+                          Gender required. 
+                       </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label>Email</label>
+                      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                      <div *ngIf="submitted && f.email.errors" class="invalid-feedback alert alert-danger">
+                          <div *ngIf="f.email.errors.required">Email is required</div>
+                          <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                      </div>
+                  </div>
+                  
+                  <div class="form-group">
+                      <label>Country</label>
+                      <select formControlName="country" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.country.errors }">
+                        <option [ngValue]="null" disabled>Choose your Country</option>
+                        <option *ngFor="let country of countrys" [ngValue]="country.id">
+                            {{ country.name }}
+                        </option>
+                      </select> 
+                      <div *ngIf="submitted && f.country.errors" class="invalid-feedback alert alert-danger">
+                          <div *ngIf="f.country.errors.required">Country is required</div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Department</label>
+                    <select multiple formControlName="department" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.department.errors }">
+                      <option *ngFor="let department of departments" [ngValue]="department.id">
+                          {{ department.name }}
+                      </option>
+                    </select> 
+                    <div *ngIf="submitted && f.department.errors" class="invalid-feedback alert alert-danger">
+                        <div *ngIf="f.department.errors.required">Department is required</div>
+                    </div>
+                </div>
+                  
+                  <div class="form-group">
+                      <label>Password</label>
+                      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                      <div *ngIf="submitted && f.password.errors" class="invalid-feedback alert alert-danger">
+                          <div *ngIf="f.password.errors.required">Password is required</div>
+                          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label>Terms & Condition&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                      <input type="checkbox" value="male" formControlName="tc"> 
+                       
+                      <div *ngIf="submitted && registerForm.get('tc').invalid" class="alert alert-danger"> 
+                          Accept Terms & Condition required. 
+                       </div>
+                  </div>
+
+                  <div class="form-group">
+                      <button [disabled]="loading" class="btn btn-primary">Register</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
